@@ -36,6 +36,7 @@ import java.util.zip.ZipError;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.fabricmc.loom.LoomGradleExtension;
 import org.gradle.api.GradleException;
 import org.gradle.api.Project;
 import org.gradle.api.logging.Logger;
@@ -180,16 +181,24 @@ public class MinecraftProvider extends DependencyProvider {
 			return;
 		}
 
+		LoomGradleExtension minecraft = (LoomGradleExtension) getProject().getExtensions().getByName("minecraft");
+
 		DownloadUtil.downloadIfChanged(new URL(versionInfo.downloads.get("client").url), minecraftClientJar, logger);
-		DownloadUtil.downloadIfChanged(new URL(versionInfo.downloads.get("server").url), minecraftServerJar, logger);
+		if (!minecraft.clientOnly) DownloadUtil.downloadIfChanged(new URL(versionInfo.downloads.get("server").url), minecraftServerJar, logger);
 	}
 
 	private void mergeJars(Logger logger) throws IOException {
 		logger.lifecycle(":merging jars");
 
-		try (JarMerger jarMerger = new JarMerger(minecraftClientJar, minecraftServerJar, minecraftMergedJar)) {
-			jarMerger.enableSyntheticParamsOffset();
-			jarMerger.merge();
+		LoomGradleExtension minecraft = (LoomGradleExtension) getProject().getExtensions().getByName("minecraft");
+
+		if (!minecraft.clientOnly) {
+			try (JarMerger jarMerger = new JarMerger(minecraftClientJar, minecraftServerJar, minecraftMergedJar)) {
+				jarMerger.enableSyntheticParamsOffset();
+				jarMerger.merge();
+			}
+		} else {
+			java.nio.file.Files.copy(minecraftClientJar.toPath(), minecraftMergedJar.toPath());
 		}
 	}
 
