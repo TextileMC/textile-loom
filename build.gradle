@@ -11,17 +11,17 @@ plugins {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-group = 'net.fabricmc'
+group = 'net.textilemc'
 archivesBaseName = project.name
 def baseVersion = '0.5'
 
-def build = 'local'
+def build = 'textile'
 def ENV = System.getenv()
 if (ENV.BUILD_NUMBER) {
 	build = "release #${ENV.BUILD_NUMBER}"
 	version = baseVersion + '.' + ENV.BUILD_NUMBER
 } else {
-	version = baseVersion + '.local'
+	version = baseVersion + '.textile'
 }
 
 repositories {
@@ -146,8 +146,8 @@ publishing {
 
 		// Manually crate the plugin marker for snapshot versions
 		snapshotPlugin(MavenPublication) { publication ->
-			groupId 'fabric-loom'
-			artifactId 'fabric-loom.gradle.plugin'
+			groupId 'textile-loom'
+			artifactId 'textile-loom.gradle.plugin'
 			version baseVersion + '-SNAPSHOT'
 
 			pom.withXml({
@@ -159,7 +159,7 @@ publishing {
 				Node groupId = dependency.appendChild(document.createElement('groupId'))
 				groupId.setTextContent('net.fabricmc')
 				Node artifactId = dependency.appendChild(document.createElement('artifactId'))
-				artifactId.setTextContent('fabric-loom')
+				artifactId.setTextContent('textile-loom')
 				Node version = dependency.appendChild(document.createElement('version'))
 				version.setTextContent(baseVersion + '-SNAPSHOT')
 			})

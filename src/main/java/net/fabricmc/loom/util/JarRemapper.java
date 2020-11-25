@@ -34,13 +34,10 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
+import net.fabricmc.tinyremapper.*;
 import org.objectweb.asm.commons.Remapper;
 
 import net.fabricmc.stitch.util.Pair;
-import net.fabricmc.tinyremapper.IMappingProvider;
-import net.fabricmc.tinyremapper.InputTag;
-import net.fabricmc.tinyremapper.OutputConsumerPath;
-import net.fabricmc.tinyremapper.TinyRemapper;
 
 public class JarRemapper {
 	private final List<IMappingProvider> mappingProviders = new ArrayList<>();
@@ -87,7 +84,7 @@ public class JarRemapper {
 			OutputConsumerPath outputConsumer = new OutputConsumerPath.Builder(data.output).build();
 			outputConsumers.add(outputConsumer);
 
-			outputConsumer.addNonClassFiles(data.input);
+			outputConsumer.addNonClassFiles(data.input, NonClassCopyMode.FIX_META_INF, null);
 
 			data.processAccessWidener(remapper.getRemapper());
 			remapper.apply(outputConsumer, data.tag);
