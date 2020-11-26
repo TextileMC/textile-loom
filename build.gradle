@@ -11,7 +11,7 @@ plugins {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-group = 'net.textilemc'
+group = 'net.textile'
 archivesBaseName = project.name
 def baseVersion = '0.5'
 
@@ -109,7 +109,7 @@ checkstyleMain {
 gradlePlugin {
 	plugins {
 		fabricLoom {
-			id = 'fabric-loom'
+			id = 'textile-loom'
 			implementationClass = 'net.fabricmc.loom.LoomGradlePlugin'
 		}
 	}
@@ -157,7 +157,7 @@ publishing {
 				Node dependencies = root.appendChild(document.createElement('dependencies'))
 				Node dependency = dependencies.appendChild(document.createElement('dependency'))
 				Node groupId = dependency.appendChild(document.createElement('groupId'))
-				groupId.setTextContent('net.fabricmc')
+				groupId.setTextContent('net.textilemc')
 				Node artifactId = dependency.appendChild(document.createElement('artifactId'))
 				artifactId.setTextContent('textile-loom')
 				Node version = dependency.appendChild(document.createElement('version'))
