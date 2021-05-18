@@ -268,6 +268,10 @@ public class LoomGradleExtension {
 		return null;
 	}
 
+	public File getUnpickLoggingConfigFile() {
+		return new File(getProjectPersistentCache(), "unpick-logging.properties");
+	}
+
 	@Nullable
 	private <T> T recurseProjects(Function<Project, T> projectTFunction) {
 		Project p = this.project;
